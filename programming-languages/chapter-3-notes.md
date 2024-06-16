@@ -1,6 +1,6 @@
 # Chapter 3
 ## 3.1 - Introduction
-- **Syntax** is the form of its expressions, statements, and program units
+- **Syntax** is the form of languages expressions, statements, and program units
 - **Semantics** the meaning of those expressions, statements, and program units
 - Example the syntax of a Java `while` statement is:
     ```java
@@ -11,7 +11,8 @@
 to repeat the process. If control of Boolean expression is false, control transfers to statement following `while` construct.
 
 ## 3.2 - General Problem of Describing Syntax
-- **Sentences** or **statements** the strings of a language
+- **Sentences** or **statements** the string of characters over some alphabet
+- **language** set of sentences
 - **Lexemes** include its numeric, literals, operators, and special words.
     - think of programs as strings of lexemes rather than characters
 - **Token** category of its lexemes
@@ -21,16 +22,19 @@ to repeat the process. If control of Boolean expression is false, control transf
     ```
 - The **lexemes** and **tokens** are
 
-| Lexemes | Tokens      |
-| :---:   | :---:       |
-| index   | identifier  |
-| =       | equal_sign  |
-| 2       | int_literal |
-| *       | mult_op     |
-| count   | identifier  |
-| +       | plus_op     |
-| 17      | int_literal |
-| ;       | semi-colon  |
+    | Lexemes | Tokens      |
+    | :---:   | :---:       |
+    | index   | identifier  |
+    | =       | equal_sign  |
+    | 2       | int_literal |
+    | *       | mult_op     |
+    | count   | identifier  |
+    | +       | plus_op     |
+    | 17      | int_literal |
+    | ;       | semi-colon  |
 
 - Languages can be defined in two distinct ways: **recognition** and **generation**
 - The syntax analysis part of a compiler is a **recognizer** for the language the compiler translates
+- Language generator is a device used to generate sentences of a language
+
+## 3.3 - Formal Methods of Describing syntax
