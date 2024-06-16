@@ -1,7 +1,7 @@
 # Module 1 homework<br>
 ## Chapter 1 Review Questions
 #### 7. What is the disadvantage of having too many features in a language?
-Too many features in language strong affects its readability. A language with a large number of features is more difficult to learn than a language with a smaller number.
+Too many features in language strongly affects its readability. A language with a large number of features is more difficult to learn than a language with a smaller number.
 This also leads to programmers learning a smaller subset of the language and ignoring other features.
 
 #### 8. How can user-defined operator overloading harm the readability of a program?
