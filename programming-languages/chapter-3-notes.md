@@ -20,6 +20,7 @@ to repeat the process. If control of Boolean expression is false, control transf
     index = 2 * count + 17;
     ```
 - The **lexemes** and **tokens** are
+
 | Lexemes | Tokens      |
 | :---:   | :---:       |
 | index   | identifier  |
