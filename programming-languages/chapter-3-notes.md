@@ -38,3 +38,30 @@ to repeat the process. If control of Boolean expression is false, control transf
 - Language generator is a device used to generate sentences of a language
 
 ## 3.3 - Formal Methods of Describing syntax
+- **grammars** formal language-generation mechanisms commonly used to define syntax of programming languages
+- Forms of the tokens of programming languages can be described by regular grammars
+- Syntax of whole programming languages, with minor exceptions, can be described by context-free grammars
+- **Backus-Naur Form (BNF)** natural notation for describing syntax created by John Backus for ALGO 58 and later modified by Peter Naur for ALGO 60
+- Still the most popular method to concisely describe programming language syntax
+- Context-free grammars are referred to as grammars and interchangably used with BNF
+- ### Fundamentals
+    - **metalanguage** language used to describe another language. BNF is a metalanguage for programming languages
+    - BNF uses abstraction for syntatic structures
+    - A simple Java statement might be represented by the abstraction `<assign>`
+    - Actual definition of `<assign>` can be given by:
+        ```
+        <assign> -> <var> = <expression>
+        ```
+    - Text on left of `->` is **left-hand side (LHS)** is the abstraction being defined
+    - Text to the right of arrow is **the definition of the LHS** called **right-hand side (RHS)**
+        - **RHS** consists of a mixture of tokens, lexemes, and references to other abstractions
+    - Altogether this is called a **production rule**
+    - In the above rule the abstractions `<var>` and `<expression>` must be defined for the `<assign>` definition to be useful
+    - That particular rule specifies that the abstraction `<assign>` is defined as an instance of the abstraction
+        `<var>` the lexeme `=` followed by the abstraction `<expression>`
+    - One example sentence whose syntatic structure is described by the rule is:
+        ```
+        total = subtotal1 + subtotal2
+        ```
+
+
