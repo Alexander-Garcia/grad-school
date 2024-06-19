@@ -102,3 +102,17 @@ to repeat the process. If control of Boolean expression is false, control transf
 - ### Operator Precedence
     - An operator generated lower in the parse tree has to be evaluated first and therefore has precedence
     - **Associative predence** When a grammar rule has its LHS also appearing at the beginning of its RHS then it is **left recursive** and has left associativity
+
+## 3.4 Attribute Grammars
+- used to describe more of the structure of the programming language than can be defined with context-free grammar
+- allows certain language rules to be conveniently described, such as type compatibility
+- the size of the grammar determines the size of the syntax analyzer
+- Example of a rule that cannot be described with BNF is a variable that must be declared before being referenced
+- **Static Semantics** is only indirectly related to the meaning of programs during execution
+- named so because the analysis required to check these specifications can be done at compile time
+- **Attributes** are associated with grammar symbols (terminals and nonterminals) and are similar to variables in that they can have values assigned to them
+- **Attribute computation functions** (semantics functions) are used to specify how attribute values are computed
+- **Predicate functions** state the static semantic rules of the language and are associated with grammar rules
+- **Synthesized attributes** are used to pass syntactic information up a parse tree
+- **Inherited attributes** pass syntactic information down and across the parse tree
+
