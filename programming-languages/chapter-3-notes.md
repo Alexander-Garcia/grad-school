@@ -52,6 +52,7 @@ to repeat the process. If control of Boolean expression is false, control transf
         ```
         <assign> -> <var> = <expression>
         ```
+    - `->` means **is defined as**
     - Text on left of `->` is **left-hand side (LHS)** is the abstraction being defined
     - Text to the right of arrow is **the definition of the LHS** called **right-hand side (RHS)**
         - **RHS** consists of a mixture of tokens, lexemes, and references to other abstractions
@@ -68,15 +69,15 @@ to repeat the process. If control of Boolean expression is false, control transf
     - A BNF description, or grammar, is a collection of rules
     - **Nonterminals** can have two or more distinct definitions representing two or more possible syntactic forms in the language
     - Multiple definitions can be written with a single rule using ` | ` which is `logical OR`
-    ```
-    <if_stmt> -> if ( <logic_exp) > <stmt> | if ( <logic_exp> ) <stmt> else <stmt>
-    ```
+        ```
+        <if_stmt> -> if ( <logic_exp) > <stmt> | if ( <logic_exp> ) <stmt> else <stmt>
+        ```
     - In these rules `<stmt>` represents either a single or compound statement
 - ### Describing Lists
     - A rule is **recursive** if its LHS appears in its RHS
-    ```
-    <ident_list> -> identifier | identifier, <ident_list>
-    ```
+        ```
+        <ident_list> -> identifier | identifier, <ident_list>
+        ```
 - ### Grammars and Derivations
     - A grammar is a generative device for defining languages
     - Sentences of the language are generated through a sequence of applications of the rules, beginning with a special nonterminal of the grammar called **start symbol**
@@ -85,4 +86,19 @@ to repeat the process. If control of Boolean expression is false, control transf
     - **Lefmost derivations** replace the leftmost nonterminal in the sentential form
         - derivations may be leftmost, rightmost, or an order that is neither
         - this can generate different sentences of the language
-
+        - Example of a leftmost derivation:
+            ```
+            <program> => begin <stmt_list> <end>
+                      => begin <stmt> ; <stmt_list> <end>
+                      => begin <var> = <expression> ; <stmt_list> <end>
+            ```
+        - `=>` is read **derives**
+- ### Parse Trees
+    - One of most attractive features of grammars is they naturally describe the hierarchical syntactic structure of the sentences of the languages they define
+    - Every node is labeled with a **nonterminal** every leaf is labeled with a **terminal**
+- ### Ambiguity
+    - A grammar that generates a sentential form for which there are two or more distinct parse trees is **ambiguous**
+    - if a grammar generates a sentence with more than one leftmost derivation or more than one rightmost derivation then it is ambiguous
+- ### Operator Precedence
+    - An operator generated lower in the parse tree has to be evaluated first and therefore has precedence
+    - **Associative predence** When a grammar rule has its LHS also appearing at the beginning of its RHS then it is **left recursive** and has left associativity
