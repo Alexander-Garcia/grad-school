@@ -46,7 +46,7 @@ to repeat the process. If control of Boolean expression is false, control transf
 - Context-free grammars are referred to as grammars and interchangably used with BNF
 - ### Fundamentals
     - **metalanguage** language used to describe another language. BNF is a metalanguage for programming languages
-    - BNF uses abstraction for syntatic structures
+    - BNF uses abstraction for syntactic structures
     - A simple Java statement might be represented by the abstraction `<assign>`
     - Actual definition of `<assign>` can be given by:
         ```
@@ -59,9 +59,30 @@ to repeat the process. If control of Boolean expression is false, control transf
     - In the above rule the abstractions `<var>` and `<expression>` must be defined for the `<assign>` definition to be useful
     - That particular rule specifies that the abstraction `<assign>` is defined as an instance of the abstraction
         `<var>` the lexeme `=` followed by the abstraction `<expression>`
-    - One example sentence whose syntatic structure is described by the rule is:
+    - One example sentence whose syntactic structure is described by the rule is:
         ```
         total = subtotal1 + subtotal2
         ```
-
+    - The abstractions in an BNF description, or grammar, are often called **nonterminals**
+    - The lexemes or tokens of the rule are called **terminals**
+    - A BNF description, or grammar, is a collection of rules
+    - **Nonterminals** can have two or more distinct definitions representing two or more possible syntactic forms in the language
+    - Multiple definitions can be written with a single rule using ` | ` which is `logical OR`
+    ```
+    <if_stmt> -> if ( <logic_exp) > <stmt> | if ( <logic_exp> ) <stmt> else <stmt>
+    ```
+    - In these rules `<stmt>` represents either a single or compound statement
+- ### Describing Lists
+    - A rule is **recursive** if its LHS appears in its RHS
+    ```
+    <ident_list> -> identifier | identifier, <ident_list>
+    ```
+- ### Grammars and Derivations
+    - A grammar is a generative device for defining languages
+    - Sentences of the language are generated through a sequence of applications of the rules, beginning with a special nonterminal of the grammar called **start symbol**
+    - The sequence of rule applications is called a **derivation** 
+    - Each of the strings in a derivation is called **sentential form**
+    - **Lefmost derivations** replace the leftmost nonterminal in the sentential form
+        - derivations may be leftmost, rightmost, or an order that is neither
+        - this can generate different sentences of the language
 
