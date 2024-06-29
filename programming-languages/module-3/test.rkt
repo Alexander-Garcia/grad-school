@@ -45,3 +45,8 @@
 ; like saying (cdr (cdr (car `((A (B C)) E F))
 '(testing cddar)
 (cddar `((A (B C)) E F))
+
+
+(cons 'A (cons 'B (cons 'C '())))
+
+
