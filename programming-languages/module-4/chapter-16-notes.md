@@ -32,16 +32,16 @@
         1. Single atomic proposition on the left side (called **headed horn clauses**) used to state *relationships*
         2. empty left side (**headless horn clauses**) which is used to state *facts*
 ### 16.6 Terms
--**Term** is a constant, variable, or structure
--**Constant** is either an **atom** or an integer
--**atom** string of letters, digits, and underscores that begin with lowercase letter or string of any printable ASCII characters delimited by apostrophes
--**variable** any string of letters, digits, and underscores that begins with uppercase letter or underscore
+- **Term** is a constant, variable, or structure
+- **Constant** is either an **atom** or an integer
+- **atom** string of letters, digits, and underscores that begin with lowercase letter or string of any printable ASCII characters delimited by apostrophes
+- **variable** any string of letters, digits, and underscores that begins with uppercase letter or underscore
     - variables are not bound to types by declaration
--**instantiation** the binding of a value, and thus a type, to a variable.
+- **instantiation** the binding of a value, and thus a type, to a variable.
     - occurs only in the resolution process
     - last only as long as it takes to satisfy one complete goal
--**uninstantiated** a variable that has not been assigned a value
--**Structure** represent the atomic propositions of predicate calculus
+- **uninstantiated** a variable that has not been assigned a value
+- **Structure** represent the atomic propositions of predicate calculus
     - the means of specifying facts in Prolog
     ```
     functor(parameter list)
