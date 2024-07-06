@@ -68,3 +68,20 @@
     2. **Exit** - when a goal has been satisfied
     3. **Redo** - when a backtrack occurs
     4. **Fail** - when a goal fails
+### 16.6 List Structures
+- An atomic proposition, which looks more like function call than data structure, is actually a form of a record.
+- **List** another Prolog data structure - a sequence of any number of elements (can be atoms, atomic propositions, or other terms including other lists)
+    ```prolog
+    [apple, prune, grape, melon]
+    [] (empty list)
+    [X | Y] (head X and tail Y)
+    ```
+- `|` two meanings 
+    1. used to dismantle lists
+    2. used to create lists
+- if `List_1` is instantiated to a list `[cs, math, physics]` and an atom `New_Elmnt` is an atom `chemistry` then statement
+    ```prolog
+    [New_Elmnt | List_1]
+    ```
+- creates a new list `[chemisty, cs, math, physics]`
+
