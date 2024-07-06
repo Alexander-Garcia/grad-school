@@ -48,4 +48,23 @@
     ```
 - The functor is any atom and used to identify the structure
 - parameter list can be any list of atoms, variables, or other structures
-
+### 16.6 Elements of Prolog
+- `=` is an infix operator for equality
+- `is` operator take arithmetic expression as right operand and variable as left operand
+    ```prolog
+    A is B / 17 + C
+    ```
+- sets the value of A but not the same as assignment statement
+- the following is illegal
+    ```prolog
+    Sum is Sum + Number
+    ```
+- variable on the left must be uninstantiated
+- variable on the right side must be instantiated
+### Trace
+- built-in structure that displays instantiations at each step
+- **Tracing model** of execution - four events:
+    1. **Call** - beginning of attempt to satisfy goal
+    2. **Exit** - when a goal has been satisfied
+    3. **Redo** - when a backtrack occurs
+    4. **Fail** - when a goal fails
