@@ -1,4 +1,18 @@
-# Chapter 16 overview
+# Test 2 notes
+```
+    - Chapter 15 - sections 1-5 and section 11
+    - Chapter 16 - sections 1-6
+```
+## Chapter 15 review
+- no such thing as a variable that models a memory location and no side effects
+- since no side effects and cannot depend on any external values they always map a particular element of the domain to an element of the range
+- **define** operates -> first parameter is never evaluated, the second parameter is evaluated and bound to the first parameter
+- **referential transparency** execution of a function always produces same result when given same parameters
+- control can  be done with 
+    1. IF statement which is 2 way control
+    2. COND statement which is multi-way control
+    3. recusion used to specify repitition
+## Chapter 16 review
 - proposition is a logical statement that may or may not be true.
     - it consists of objects and relationships among objects
 - `a cat is a mammal` -> has a logical value (true) and therefore is a proposition
@@ -99,10 +113,27 @@
         - **Top-down resolution** or **backward chaining** system begins with the goal and attempts to find a sequence of matching propositions that lead to some set of original facts
 - Prolog implementations use **backward chaining** for resolution
 - when a goal has more than one subgoal, possible strategies are:
-    - **depth-first search** find a complete proof for teh first subgaol before working on others
+    - **depth-first search** find a complete proof for the first subgoal before working on others
     - **breadth-first search** work on all subgoals in parallel
 - Prolog uses **depth-first search** (can be done with fewer computer resources)
 - when a goal with multiple subgoals is being processed and system fails to show truth of subgoal, it abandons subgoal it can't prove
 - It then reconsiders previous subgoal, if there is one, and attempts to find an alternative solution (backtracking)
 - multiple solutions to a subgaol may result from different instantiations to variables
 - can take lots of time and space because may find all possible proofs to every subgoal
+#### key quiz 5
+- Procedures are units in logic programs -> false
+- Existential quantifiers are not required in a clausal form -> true
+- left side of a horn clause may contain disjunction operators -> false
+- negation operator is not allowed in clausal form -> true
+- In declarative semantics the meaning of each statement is not determined by the way this statement is used in the program -> true
+- Turn this sentence into Prolog Headed Horn Clause: *if pete likes fruits and an orange is a fruit, then pete likes an orange
+    ```prolog
+    likes(pete, orange) :- likes(pete,fruit), fruit(orange).
+    ```
+- Two parts of a compound term are a *functor* and *ordered list of parameters*
+- Two modes in which a proposition can be stated are a *fact* and *query*
+- process of proving and individual subgoal may be called *matching*, *satisfying*, or *resolution*
+- to match a given goal, prolog implementations use *top-down* resolution, also called *backward chaining*
+
+### Book notes chapter 16
+
