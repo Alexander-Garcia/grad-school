@@ -12,6 +12,9 @@
     1. IF statement which is 2 way control
     2. COND statement which is multi-way control
     3. recusion used to specify repitition
+- **tail-recursion** if its recursive call is the last operation in the function
+- tail-recursion can automatically be converted by compiler to use iteration making it faster
+- a nameless function includes the word `LAMBDA` and is called **lambda expression**
 ## Chapter 16 review
 - proposition is a logical statement that may or may not be true.
     - it consists of objects and relationships among objects
