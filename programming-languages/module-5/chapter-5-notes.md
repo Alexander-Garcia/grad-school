@@ -1,12 +1,12 @@
 # Chapter 5 video lecture notes
-## sec 5.1 - 5.3
+## Sec 5.1 - 5.3
 - Imperative languages are abstraction of von neumann architecture
 - 2 primary components of this architecture
     1. memory: stores both instructions and data
     2. processor: provides operations for modifying the contents of memory
 - abstractions in a language for the memory cells of the machine are variables
 - a variable can be characterized by a collection of properties, or attributes, the most important of which is `type`
-## sec 5.3
+## Sec 5.3
 - The clearest way to explain the various aspects of variables as abstractions of memory cells, is to characterize a variable as a sextuple of attributes
     1. name
     2. address
@@ -95,11 +95,11 @@
         - every variable must have a run-time descriptor associated with it to maintain the current type
         - storage used for the value of a variable must be of varying size because different type values require different amounts of storage
 - Languages that have dynamic type binding for variables are usually implemented using pure interpreters rather than compilers
-#### storage bindings and lifetime
+#### Storage bindings and lifetime
 - **allocation** getting a cell from some pool of available cells
 - **deallocation** putting a cell back into the pool
 - **lifetime** of a variable is the time during which it is bound to a particular memory cell
-#### categories of variables according to their lifetime
+#### Categories of variables according to their lifetime
 1. Static variables
     - bound to memory cells before execution begins and remains bound to same memory cell throughout execution
         - C and C++ static variables in functions; global variables
@@ -140,4 +140,91 @@ delete intnode; // deallocate variable to which intnode points
 - Disadvantage
     - inefficient because all attributes are dynamic
     - loss of error detection
-
+## Sec 5.5
+- **Scope** is range of statements over which it is visible
+- variables is visible in a statement if it can be reference or assigned within that statement
+- local variables of a program unit are those declared in that unit
+- non-local variables are visible in unit but not declared within that unit
+- global variables special category of non-local variables
+- Scope Rules -> determine how references to names are associated with variables
+    - **static scope** and **dynamic scope**
+### Static scoping (lexical scoping)
+- permits human reader (and compiler) to determine type of every variable in program simply by examing its source code (text)
+- allows to determine scope of variable statically - prior to execution
+- Assumptions
+    - all scopes are associated with program units
+    - all reference nonlocal variables are declared in other program units
+    - scoping is only method of accessing nonlocal variables in language under discussion
+- Variables in a block scope are typically stack-dynamic so their storage is allocated when section is entered and deallocated when section is exited
+- scope of global variables extends from their declaration to the end of program but skips over any subsequent function definitions.
+    - no implicitly visible in any function
+- static scoping works well in many situations
+- problems:
+    - most cases, too much access is possible
+    - as program evolves, initial structure is destroyed an dlocal variables often become global which damages reliability
+    - subprograms also gravitate toward becoming global rather than nested
+### Dynamic scoping
+- based on calling sequence of subprograms, not on their spatial relationship to each other -> scope can only be determined at run time
+- just assume dynamic-scoping rules apply to nonlocal
+```javascript
+function big() {
+    function sub1() {
+        var x = 7;
+    }
+    function sub2() {
+        var y = x;
+    }
+    var x = 3;
+}
+```
+- Two different call sequences for sub2
+    1. big calls sub1 which calls sub2. Search proceeds from local procedure, sub2, to its caller, sub1, where declaration for x is found
+        - so reference to x in sub2 in this case is to the x declared in sub1 => value of x = 7
+    2. sub2 is called directly from big. dynamic parent of sub2 is big, and reference is to x declared in big => x = 3
+- if static scoping were used in either calling sequence, reference to x in sub2 would be to big's x
+- Advantage: convenience
+- Disadvantages
+    - while subprogram is executing, its variables are visible to all subprograms it calls
+    - impossible to statically type check
+    - poor readability - it is not possible to statically determine type of variable
+    - programs work slower than in static-scoped language
+## Sec 5.6 Scope and Lifetime
+- Sometimes scope and lifetime of a variable appear to be related, but are different concepts
+- Example:
+    - static variable in C or C++ using `static`
+    - statically bound to scope of function and also statically bound to storage
+    - its scope is static and local to the function, but its lifetime extends over the entire execution of the program of which it is a part
+## Sec 5.7 Referencing Env
+- collection of all variables that are visible in the statement
+- in a static-scoped language it includes all variables declared in its local scope plus collection of all variables of its ancestor scopes that are visible
+- Example in python:
+```python
+g = 3 # a global
+def sub1():
+    a = 5 # creates a local
+    b = 7 # creates another local
+    # point 1
+    def sub2():
+        global g # global g is now assignable
+        c = 9 # a new local
+        # point 2
+        def sub3():
+            nonlocal c # makes nonlocal c visible
+            g = 11
+            # point 3
+```
+- Referencing envs
+    - Point 1 -> local a and b of sub1, global g for reference, but for assignment
+    - Point 2 -> local c of sub2, global g for both reference and assignment
+    - Point 3 -> Nonlocal c of sub2, local g of sub3
+## Sec 5.8 Named Constants
+- variable that is bound to a value only once
+    - aid to readability
+    - improvement of reliability
+    - parametrization of programs
+- Binding of values to named constants can be either static (manifest constants) or dynamic
+- languages:
+    - C++ and Java: expressions of any kind; may be dynamically bound
+    - C# has two kinds of name constants, **readonly** and **const**
+        - values of **const** named constants are bound at compile time
+        - values of **readonly** are dynamically bound
