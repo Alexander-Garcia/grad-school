@@ -28,7 +28,7 @@
 - In general -> `expressions1 ? expression2 : expression3`
 - Operand evaluation order
     1. Variables: fetch the value from memory
-    2. Constatns: sometimes a fetch from memory; sometimes the constant is in the machine language instruction
+    2. Constants: sometimes a fetch from memory; sometimes the constant is in the machine language instruction
     3. Parenthesized expressions: evaluate all operands and operators first
     4. Most interesting case is when an operand is a function call
 - Functional side effects: when a function changes a two-way parameter or a non-local variable
