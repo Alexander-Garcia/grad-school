@@ -5,8 +5,11 @@ int test(int *l);
 
 int main() {
   int i = 10, j = 10, sum1, sum2;
-  sum1 = (i / 2) + fun(&i);
+  sum1 = (i / 2) + (fun(&i));
   sum2 = fun(&j) + (j / 2);
+  printf("sum1 = %d\n", sum1);
+  printf("sum2 = %d\n", sum2);
+  printf("value of j = %d\n", j);
   int x = 3;
   x = x + test(&x);
   printf("x = %d\n", x);
