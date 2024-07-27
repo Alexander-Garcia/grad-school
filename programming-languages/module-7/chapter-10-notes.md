@@ -84,11 +84,11 @@ void sub(float total, int part) {
 - Static Chains
     - a new pointer **static link** (static scope pointer) is added to activation record
 - Static scoping
-    - static chain is a chain of static links that connects certain ARIs (activation record instances)
-    - static link in ARI for subprogram A points to one of the ARI of A's static parent
+    - **static chain** is a chain of static links that connects certain ARIs (activation record instances)
+    - **static link** in ARI for subprogram A points to one of the ARI of A's static parent
     - static chain from an ARI connects it to all of its static ancestors
-    - static-depth is an integer associated with a static scope whose value is the depth of nesting of that scope
-    - chain-offset or nesting-depth of a nonlocal reference is difference between statis depth of reference and that of the scope where it is declared
+    - **static-depth** is an integer associated with a static scope whose value is the depth of nesting of that scope
+    - **chain-offset** or nesting-depth of a nonlocal reference is difference between static depth of reference and that of the scope where it is declared
     - reference to a variable can be represented by the pair:
         - (chain offset, local offset)
             - where local offset is offset in the activation record of the variable being referenced
@@ -101,3 +101,36 @@ void sub(float total, int part) {
     - time critical code is difficult:
         1. costs of nonlocal references are difficult to determine
         2. code changes can change the nesting depth, and thus cost
+```Python
+# Global scope
+def f1():
+    def f2():
+        def f3():
+        # end f3
+    # end f2
+# end f1
+```
+- static-depths of global scope -> 0
+- f1 -> 1
+- f2 -> 2
+- f3 -> 3
+- if procedure f3 references a variable declared in f1, the chain_offset of that reference would be 2
+    - static-depth of f3 - fatic-depth of f1
+## 10.5 Blocks
+- Blocks are user-specified local scopes for variables
+- Lifetime of a block is only when control enters block
+- advantage of using local variable like temp is that it cannot interfere with any other variables with same name
+- Implementing Blocks
+    1. Treat blocks as parameter-less subprograms that are always called from same location
+        - every block has an AR; an instance is created every time the block is executed
+    2. Since maximum storage required for a block can be statically determined, this amount of space can be allocated after local variables in AR
+- Dynamic scoping
+    - Deep access
+        - non-local references are found by searching the AR instances on the dynamic chain
+            - length of chain cannot be statically determined
+            - every activation record instance must have variables names
+- dynamic link is a pointer to the base of an activation record instance of the caller
+- Shallow Access
+    - put locals in a central place
+        - one stack for each variable name
+        - central table with an entry for each variable name
