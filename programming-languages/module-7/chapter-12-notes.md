@@ -1,0 +1,70 @@
+# Chapter 12 notes
+## 12.2 OOP
+- productivity increases can come from reuse
+    - Abstract Data Types (ADTs) are difficult to reuse - always need changes
+    - All ADTs are indepenedent and at the same level
+- Inheritance allows new classes defined in terms of existing onees
+    - allows them to inherit common parts
+- Inheritance addresses both of the above concerns
+    - reuse ADTs after minor changes and define classes in a hierarchy
+- ADTs are usually called **classes**
+- Class instances are called **objects**
+- A class that inherits is a **derived class* or **subclass** or **child class**
+- Class from which another class inherits is a base class, superclass, or parent class
+- subprograms that define operations on objects are called methods
+- calls to methods are called messages
+- entire collection of methods of an object is called its message protocol or message interface
+- messages have 2 parts
+    - method name
+    - destination object
+- How is passing methods different from calling subprograms
+    - methods have access to data members defined in same class
+        - from this POV they are similar to global variables for subprograms
+- Inheritance can be complicated by access control to encapsulated entities:
+    - class can hide entities from its subclass
+    - from its clients
+    - from its clients while allowsing its subclasses to see them
+- Besides inheriting a method as is a class can modify an inherited method
+    - new one overrides inherited one
+    - method in the parent is said to be overriden
+- 3 ways a class can differe from its parent
+    - subclass can add variables and / or methods to those inherited from the parent
+    - subclass can modify behavior of one or more of its inherited methods
+    - parent class can define some of its variables or methods to have private access, which means they will not be visible in subclass
+- 2 kinds of variables in a class
+    - class variables - one per class
+    - instance variables - one per object
+- 2 kinds of methods in a class
+    - class methods -> accept messages to the class
+    - instance methods -> accept messages to objects
+- Disadvantage of inheritance for reuse
+    - creates interdependencies among classes that complicate maintenance
+- Polymorphism
+    - provided by the dynamic binding of messages to method definitions is sometimes called **dynamic dispatch**
+- Polymorphic variables can be defined in a class that is able to reference (or point to) objects of the class and objects of any of its descendants
+## object allocation and deallocation
+- Is deallocation explicit or implicit?
+    - issue of dangling pointers or references
+- From where are objects allocated?
+    - If they behave like ADTs, they be allocated from anywhere
+- Explicitly created on heap (via new)
+    - if they are all heap-dynamic, references can be uniform through a pointer or reference variable
+        - dereferencing can be implicit -> simplifies syntax
+    - allocated from run-time stack
+        - problem with regard to subtypes -> object slicing
+- Dynamic and static binding
+    - Should all binding of messages to methods be dynamic?
+        - if none are, you lose advantages of dynamic binding
+        - if all are it is inefficient
+    - Alternative is to allow the user to specify whether binding should be static or dynamic
+- Nested classes
+    - one of the primary motivations for nesting class definitions is information hiding
+        - if a new class is needed by only one class, there is no reason to define it in such a way that it can be seen by other classes
+    - Can new class be nested insided the class that uses it?
+    - in some cases the new class is nested inside a subprogram rather than directly in another class
+- other issues
+    - which facilities of the nesting class should be visible to the nested class and vice versa
+- Initialization of  objects
+    - are objects initialized to values when they are created?
+        - implicit or explicit initialization
+    - 
