@@ -1,3 +1,4 @@
+// no bueno O(n^2)
 function naiveSearch (long, short) {
   let count = 0;
   for (let i = 0; i < long.length; i++) {
