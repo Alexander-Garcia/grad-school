@@ -15,11 +15,11 @@
 - T(n) -> running time of an algorithm
 - C<sub>op</sub> -> execution time for the basic operation
 - C(n) -> number of times the basic operation is executed
-- Runnning time analysis of the Insertion sort
+- Running time analysis of the Insertion sort
     - `while i > 0 and A[i] > key`
     - the basic operation run the most / most important is the A[i] > key because it contributes to the logic of the algorithm
 - When we want to choose the basic operation that contributes to the runtime
 - O-notation (Big-O): an asymptotic upper bound for a function
 - Big-Omega: an asymptotic lower bound for a function
-- Big-Theta: an asymptoticly tight bound for a function
+- Big-Theta: an asymptotically tight bound for a function
 
