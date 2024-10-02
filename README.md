@@ -1,9 +1,9 @@
-## Summer 2024
+# Summer 2024
 - Programming languages
-## Fall 2024
+# Fall 2024
 - Artificial intelligence
 - Advanced Data Structures and Algorithms
 - Python for Data Science
-## Spring 2025
+# Spring 2025
 - Machine learning
 - Deep learning
