@@ -1,6 +1,8 @@
 import random
 import time
+
 import matplotlib.pyplot as plt
+
 # all lists below will be used to plot the algorithm's running time
 # store input size for bubble sort
 bubble_sort_input_size: list[int] = []
@@ -10,6 +12,7 @@ bubble_sort_elapsed_time: list[int] = []
 insertion_sort_input_size: list[int] = []
 # store elapsed time for insertion sort
 insertion_sort_elapsed_time: list[int] = []
+
 
 def bubble_sort(a: list[int]) -> None:
     r"""Sorts in-place using Bubble Sort from class slides
@@ -41,7 +44,7 @@ def bubble_sort(a: list[int]) -> None:
     # do not time anything other than sort logic
     elapsed_time: int = stop - start
     # print results
-    print(f'Elapsed time for input size {len(a)}: {elapsed_time}')
+    print(f"Elapsed time for input size {len(a)}: {elapsed_time}")
     # append the data to be used for plot
     bubble_sort_input_size.append(len(a))
     bubble_sort_elapsed_time.append(elapsed_time)
@@ -78,10 +81,11 @@ def insertion_sort(a: list[int]) -> None:
     # Do not time anything other than sort logic
     elapsed_time = stop - start
     # print results
-    print(f'Elapsed time for input size {len(a)}: {elapsed_time}')
+    print(f"Elapsed time for input size {len(a)}: {elapsed_time}")
     # append the data to be used for plot
     insertion_sort_input_size.append(len(a))
     insertion_sort_elapsed_time.append(elapsed_time)
+
 
 def plot_time(x: list[int], y: list[int]) -> None:
     r"""Plot the timing of an algorithm using Matplotlib
@@ -98,10 +102,9 @@ def plot_time(x: list[int], y: list[int]) -> None:
     None
     """
     plt.plot(x, y)
-    plt.xlabel('Input Size')
-    plt.ylabel('Time (ns)')
+    plt.xlabel("Input Size")
+    plt.ylabel("Time (ns)")
     plt.show()
-
 
 
 if __name__ == "__main__":
