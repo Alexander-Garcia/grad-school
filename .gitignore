@@ -2,6 +2,7 @@
 .DS_Store
 venv/
 # pycharm? 
-.idea/
+/.idea/
+
 # massive training data file for AI / NLP project
 data-train.csv
