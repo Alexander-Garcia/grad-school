@@ -7,3 +7,4 @@
 # Spring 2025
 - Machine learning
 - Deep learning
+- *Graduate certificate of AI obtained here*
