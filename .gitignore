@@ -6,3 +6,6 @@ venv/
 
 # massive training data file for AI / NLP project
 data-train.csv
+
+# claude code internal files
+**/.claude/
