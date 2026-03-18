@@ -1,0 +1,4 @@
+﻿Practicing LIME
+
+
+Practice generating local explanations for a tabular dataset of your choice using LIME. Pick a random data point and generate three different explanations for the data point by varying the Ω(g) term. Critique and explain the explanations you observe. Investigate how changing the proximity πx (proximity) changes the explanations.
