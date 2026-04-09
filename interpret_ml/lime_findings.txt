@@ -1,0 +1,197 @@
+Relating the Theory and Application of LIME
+============================================
+
+This report summarizes findings from practicing LIME (Local Interpretable
+Model-agnostic Explanations) on tabular data, specifically a modified version of the titanic dataset from Kaggle. The focus is on the two key
+terms in LIME's objective function and how they affect explanations:
+
+  xi(x) = argmin L(f, g, pi_x) + Omega(g)
+
+
+1. VARYING Omega(g) — Complexity Term
+==========================================
+
+What Omega(g) controls:
+  Omega(g) penalizes the complexity of the interpretable surrogate model g.
+  In LIME's library implementation, this is controlled by the num_features
+  parameter, which limits how many features the linear surrogate can use.
+  Fewer features = higher complexity penalty = simpler explanation.
+
+Experiment:
+  Generated three explanations for the same data point using
+  num_features = 2, 4, and 7 (all available features).
+
+Results:
+
+  num_features   Omega(g)    R2 (plain)   R2 (adjusted)
+  -----------    --------    ----------   -------------
+  2              High        0.444        0.444
+  4              Moderate    0.470        0.469
+  7              Low         0.464        0.463
+
+Findings:
+
+  - With num_features=2, Sex and Fare were the only features shown. The
+    explanation was easy to communicate ("this person died mainly because
+    they were male and had a low fare") but had the lowest local fidelity
+    (R2 = 0.44). Important factors like Pclass were entirely hidden.
+
+  - With num_features=4, Sex, Pclass, Fare, and Age appeared. This
+    achieved the highest R2 (0.47), meaning the surrogate approximated the
+    Random Forest's local behavior better with 4 features than with all 7.
+    The top features from the 2-feature explanation persisted, and the
+    additional features refined the story without adding noise.
+
+  - With num_features=7, all features were included. R2 was slightly lower
+    than num_features=4 (0.46 vs 0.47). Features like Parch and Embarked
+    had near-zero weights, contributing noise without improving fidelity.
+
+  - Adjusted R2, which Molnar recommends to penalize for the number of
+    features, barely differed from plain R2 in the experiment. This is
+    because the adjustment factor (n-1)/(n-p-1) is negligible when the
+    number of perturbation samples (n=5000) far exceeds the number of
+    features (p=2 to 7). The adjustment would matter much more with fewer
+    perturbation samples.
+
+Critique:
+  There is an inherent interpretability-fidelity tradeoff. Simpler
+  explanations (high Omega(g)) are easier to digest but may omit important
+  factors. Complex explanations (low Omega(g)) are more faithful but harder
+  to communicate and may include noisy, near-zero features that add no
+  insight. In the experiment, the moderate setting (num_features=4) hit the
+  best balance — it captured the dominant signals with the highest local
+  fidelity while remaining interpretable. This suggests that for this
+  instance, only 4 features are needed to describe the local decision
+  surface — the remaining 3 are locally irrelevant.
+
+
+2. VARYING pi_x — Proximity (kernel width)
+===============================================
+
+What pi_x controls:
+  The proximity function pi_x weights perturbation samples by their
+  distance to the instance being explained, using an exponential kernel:
+
+    pi_x(z) = exp(-d(x,z)^2 / sigma^2)
+
+  The kernel_width (sigma) controls how far "local" extends. Small sigma
+  means only very nearby perturbations matter. Large sigma means distant
+  perturbations also influence the surrogate, making the explanation more
+  global.
+
+  LIME's default kernel_width = sqrt(num_features) * 0.75. For 7 features,
+  that is approximately 1.98.
+
+Experiment:
+  I generated explanations with kernel_width = 0.25, 1.98, and 5.0,
+  all using num_features=7 to isolate the proximity effect.
+
+Results:
+
+  kernel_width   Locality       R2 (plain)   R2 (adjusted)
+  ------------   --------       ----------   -------------
+  0.25           Very local     0.042        0.041
+  1.98           Default        0.492        0.491
+  5.0            Semi-global    0.517        0.516
+
+Findings:
+
+  - Narrow kernel (sigma=0.25): R2 collapsed to 0.04 — the surrogate
+    essentially failed to fit. Only perturbations almost identical to the
+    instance got meaningful weight, so the Ridge regression had very few
+    informative samples. Feature weights were near-zero and the ranking
+    was dominated by noise (sibsp ranked first, Sex ranked last — the
+    opposite of what domain knowledge would suggest, i.e males have highest death rate). This demonstrates
+    that an overly tight kernel makes explanations unstable and unreliable.
+
+  - Default kernel (sigma=1.98): R2 = 0.49. Sex emerged as the dominant
+    feature (weight -0.27), followed by Pclass and Fare (which tracks given upper class females had highest rate of survival). The feature
+    ranking aligned well with domain knowledge about Titanic survival
+    patterns. This represents a stable, locally faithful explanation.
+
+  - Wide kernel (sigma=5.0): R2 was highest at 0.52, but the explanation
+    started reflecting global trends rather than local behavior. The
+    feature ranking was similar to the default kernel but with some shifts:
+    Embarked gained importance (-0.026 vs -0.005) because the wider kernel
+    allowed the surrogate to pick up patterns from distant regions of
+    feature space where Embarked matters more. The R2 was higher because
+    the uniformly-weighted samples are easier for a linear model to fit,
+    but the explanation is less locally faithful — it describes the RF's
+    average behavior, not its behavior specifically at this instance.
+
+  - Parch flipped sign between kernels: positive (+0.001) with the default
+    kernel but negative (-0.003) with the wide kernel. This illustrates
+    how the "story" an explanation tells can change depending on how broadly
+    we define the neighborhood.
+
+Critique:
+  The kernel width defines what "local" means in LIME. The choice involves
+  a stability-locality tradeoff:
+    - Too narrow: the explanation is noisy and unreliable (R2 near 0).
+    - Too wide: the explanation is stable but no longer truly local — it
+      converges toward a global linear approximation.
+    - The default (sqrt(num_features) * 0.75) is interesting mainly because even Molnar states, "Where does the 0.75 even come from?"
+      in certain scenarios you can easily turn explanation around by changing kernel width.
+
+
+3. CROSS-VALIDATION: Manual LIME vs Library LIME
+=====================================================
+
+Purpose:
+  To validate our understanding of LIME's internals, we implemented the
+  algorithm from scratch and compared results against the library's output
+  for the same instance (test index 102: male, age 28, 3rd class, fare 7.88).
+
+Manual Implementation (4 Steps):
+  1. Generate 5,000 perturbations — N(0,1) for continuous features (Age,
+     Fare, sibsp, Parch); sample from training-set frequency distributions
+     for categorical features (Sex, Pclass, Embarked).
+  2. Label each perturbation via rf.predict_proba[:,1] (P(Survived)).
+  3. Compute proximity weights using the RBF kernel with
+     sigma = sqrt(7) * 0.75 = 1.98.
+  4. Fit Ridge(alpha=1) with sample_weight=weights.
+
+  Key design choice: we matched the library's interpretable representation
+  by encoding categoricals as binary indicators (1 = same value as instance,
+  0 = different) and continuous features as standardized values. Distances
+  are computed in this mixed space.
+
+Results:
+
+  Feature    Manual     Library     Diff       Sign Match?
+  -------    ------     -------     ----       ----------
+  Sex        -0.2652    -0.2565     -0.0087    Yes
+  Pclass     -0.0696    -0.0629     -0.0067    Yes
+  Fare       +0.0643    +0.0653     -0.0010    Yes
+  Age        -0.0377    -0.0365     -0.0012    Yes
+  Embarked   -0.0190    -0.0208     +0.0018    Yes
+  sibsp      -0.0173    -0.0175     +0.0001    Yes
+  Parch      -0.0050    -0.0027     -0.0023    Yes
+
+  R2:        Manual = 0.4799, Library = 0.4639
+  Intercept: Manual = 0.4978, Library = 0.4921
+  Sign agreement: 7/7 features
+
+Findings:
+
+  - All 7 features agree in sign, and magnitudes are remarkably close.
+    The largest absolute difference is 0.009 (Sex), while sibsp differs
+    by only 0.0001. This confirms we have faithfully reproduced the
+    library's algorithm.
+
+  - Both rank Sex as the dominant feature by a wide margin, followed by
+    Pclass and Fare — consistent with Titanic domain knowledge.
+
+  - R2 values are close (0.48 vs 0.46). The slight difference is expected
+    since each approach draws independent random perturbations.
+
+  - The only remaining source of divergence is stochastic perturbation
+    sampling. Each call draws its own random neighborhood, introducing
+    variance. This is inherent to LIME's design, not a systematic bias.
+
+  - Properly handling categorical features was critical. An earlier naive
+    implementation that treated all features as continuous (sampling Sex
+    from N(0,1) in standardized space, producing fractional values like
+    Sex=0.47) resulted in a sign flip on Sex and lower R2. The RF cannot
+    meaningfully predict on inputs it has never seen.
+
