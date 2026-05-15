@@ -1,6 +1,7 @@
 # ignore the store
 .DS_Store
 venv/
+.venv/
 # pycharm? 
 /.idea
 
@@ -11,4 +12,5 @@ data-train.csv
 **/.claude/
 
 
-**/midterm*
+midterm/
+final_exam/
